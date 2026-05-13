@@ -133,3 +133,4 @@ dist
 .vscode/settings.json
 
 .vercel
+.windsurf/workflows/public.md
