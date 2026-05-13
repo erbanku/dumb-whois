@@ -1,0 +1,11 @@
+[
+  "/assets/asset-manifest.json",
+  "/assets/logo.png",
+  "/assets/logo.svg",
+  "/assets/manifest.json",
+  "/assets/styles.css",
+  "/index.html",
+  "/index.js",
+  "/managers/toast.js",
+  "/service-worker.js"
+]

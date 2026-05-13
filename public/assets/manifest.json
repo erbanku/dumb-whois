@@ -1,0 +1,22 @@
+{
+  "name": "DumbWhois",
+  "short_name": "DumbWhois",
+  "description": "A simple WHOIS lookup web application using free APIs",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "assets/logo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "orientation": "any"
+}

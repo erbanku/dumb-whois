@@ -129,5 +129,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# Generated PWA Files
-/public/assets/*manifest.json
+
+.vscode/settings.json
+
+.vercel

@@ -1,53 +1,57 @@
-import { ToastManager } from "./managers/toast";
+import { ToastManager } from "/managers/toast.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    const toastManager = new ToastManager(document.getElementById('toast-container'));
-    const siteTitle = document.getElementById('site-title');
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const sunIcon = document.getElementById('sunIcon');
-    const moonIcon = document.getElementById('moonIcon');
-    const queryInput = document.getElementById('queryInput');
-    const lookupButton = document.getElementById('lookupButton');
-    const printButton = document.getElementById('printButton');
-    const resultDiv = document.getElementById('result');
-    const resultContent = document.getElementById('resultContent');
-    const queryTypeDiv = document.getElementById('queryType');
+document.addEventListener("DOMContentLoaded", () => {
+    const toastManager = new ToastManager(
+        document.getElementById("toast-container")
+    );
+    const siteTitle = document.getElementById("site-title");
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    const sunIcon = document.getElementById("sunIcon");
+    const moonIcon = document.getElementById("moonIcon");
+    const queryInput = document.getElementById("queryInput");
+    const lookupButton = document.getElementById("lookupButton");
+    const printButton = document.getElementById("printButton");
+    const resultDiv = document.getElementById("result");
+    const resultContent = document.getElementById("resultContent");
+    const queryTypeDiv = document.getElementById("queryType");
 
     function updateThemeIcon() {
-        const isDark = document.documentElement.classList.contains('dark');
+        const isDark = document.documentElement.classList.contains("dark");
         if (isDark) {
-            sunIcon.classList.add('hidden'); 
-            moonIcon.classList.remove('hidden');
-        }
-        else {
-            moonIcon.classList.add('hidden'); 
-            sunIcon.classList.remove('hidden');
+            sunIcon.classList.add("hidden");
+            moonIcon.classList.remove("hidden");
+        } else {
+            moonIcon.classList.add("hidden");
+            sunIcon.classList.remove("hidden");
         }
     }
 
     function toggleDarkMode() {
         const html = document.documentElement;
-        const isDark = html.classList.contains('dark');
-        html.classList.toggle('dark');
-        localStorage.setItem('darkMode', !isDark);
-        document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+        const isDark = html.classList.contains("dark");
+        html.classList.toggle("dark");
+        localStorage.setItem("darkMode", !isDark);
+        document.documentElement.setAttribute(
+            "data-theme",
+            isDark ? "dark" : "light"
+        );
         updateThemeIcon();
     }
 
     // Set Site Title
     const setSiteTitle = () => {
-        fetch('config').then(async res => {
+        fetch("config").then(async (res) => {
             const data = await res.json();
             if (data.siteTitle) {
                 const title = `${data.siteTitle} - Simple WHOIS Lookup`;
                 document.title = title;
                 siteTitle.textContent = data.siteTitle;
             }
-        })
-    }
+        });
+    };
 
     function formatDate(dateString) {
-        return dateString ? new Date(dateString).toLocaleString() : 'N/A';
+        return dateString ? new Date(dateString).toLocaleString() : "N/A";
     }
 
     function formatWhoisData(data) {
@@ -86,16 +90,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     </a>
                 </h2>`;
 
-        if (data.ipAddresses && data.ipAddresses.v4 && data.ipAddresses.v4.length > 0) {
+        if (
+            data.ipAddresses &&
+            data.ipAddresses.v4 &&
+            data.ipAddresses.v4.length > 0
+        ) {
             html += `
                 <div class="mb-3">
                     <h3 class="text-sm font-semibold text-red-700 dark:text-red-300 mb-2">IPv4</h3>
                     <div class="flex flex-wrap gap-2">
-                        ${data.ipAddresses.v4.map(ip => 
-                            `<button class="ipLookupButton bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm hover:bg-red-200 dark:hover:bg-red-700 cursor-pointer transition-colors">
+                        ${data.ipAddresses.v4
+                            .map(
+                                (ip) =>
+                                    `<button class="ipLookupButton bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm hover:bg-red-200 dark:hover:bg-red-700 cursor-pointer transition-colors">
                                 ${ip}
                             </button>`
-                        ).join('')}
+                            )
+                            .join("")}
                     </div>
                 </div>`;
         } else {
@@ -106,16 +117,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
         }
 
-        if (data.ipAddresses && data.ipAddresses.v6 && data.ipAddresses.v6.length > 0) {
+        if (
+            data.ipAddresses &&
+            data.ipAddresses.v6 &&
+            data.ipAddresses.v6.length > 0
+        ) {
             html += `
                 <div>
                     <h3 class="text-sm font-semibold text-red-700 dark:text-red-300 mb-2">IPv6</h3>
                     <div class="flex flex-wrap gap-2">
-                        ${data.ipAddresses.v6.map(ip => 
-                            `<button class="ipLookupButton bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm hover:bg-red-200 dark:hover:bg-red-700 cursor-pointer transition-colors">
+                        ${data.ipAddresses.v6
+                            .map(
+                                (ip) =>
+                                    `<button class="ipLookupButton bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200 px-3 py-1 rounded-full text-sm hover:bg-red-200 dark:hover:bg-red-700 cursor-pointer transition-colors">
                                 ${ip}
                             </button>`
-                        ).join('')}
+                            )
+                            .join("")}
                     </div>
                 </div>`;
         } else {
@@ -141,9 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         </a>
                     </h2>
                     <div class="flex flex-wrap gap-2">
-                        ${data.status.map(status => 
-                            `<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">${status}</span>`
-                        ).join('')}
+                        ${data.status
+                            .map(
+                                (status) =>
+                                    `<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">${status}</span>`
+                            )
+                            .join("")}
                     </div>
                 </div>`;
         }
@@ -161,12 +182,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         </a>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        ${data.events.map(event => `
+                        ${data.events
+                            .map(
+                                (event) => `
                             <div class="data-row p-2">
-                                <span class="font-semibold">${event.eventAction}:</span> 
+                                <span class="font-semibold">${
+                                    event.eventAction
+                                }:</span> 
                                 ${formatDate(event.eventDate)}
                             </div>
-                        `).join('')}
+                        `
+                            )
+                            .join("")}
                     </div>
                 </div>`;
         }
@@ -184,16 +211,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         </a>
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        ${data.nameservers.map(ns => `
+                        ${data.nameservers
+                            .map(
+                                (ns) => `
                             <div class="data-row p-2">${ns.ldhName}</div>
-                        `).join('')}
+                        `
+                            )
+                            .join("")}
                     </div>
                 </div>`;
         }
 
         // Registrar Info
         if (data.entities && data.entities.length > 0) {
-            const registrar = data.entities.find(e => e.roles.includes('registrar'));
+            const registrar = data.entities.find((e) =>
+                e.roles.includes("registrar")
+            );
             if (registrar) {
                 html += `
                     <div class="bg-indigo-50 p-4 rounded-lg">
@@ -201,26 +234,42 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="space-y-2">
                             <div class="data-row p-2">
                                 <span class="font-semibold">Registrar:</span> 
-                                ${registrar.vcardArray[1].find(v => v[0] === 'fn')[3]}
+                                ${
+                                    registrar.vcardArray[1].find(
+                                        (v) => v[0] === "fn"
+                                    )[3]
+                                }
                             </div>
-                            ${registrar.entities ? registrar.entities.map(entity => `
+                            ${
+                                registrar.entities
+                                    ? registrar.entities
+                                          .map(
+                                              (entity) => `
                                 <div class="data-row p-2">
                                     <span class="font-semibold">Abuse Contact:</span> 
-                                    ${entity.vcardArray[1].find(v => v[0] === 'email')?.[3] || 'N/A'}
+                                    ${
+                                        entity.vcardArray[1].find(
+                                            (v) => v[0] === "email"
+                                        )?.[3] || "N/A"
+                                    }
                                 </div>
-                            `).join('') : ''}
+                            `
+                                          )
+                                          .join("")
+                                    : ""
+                            }
                         </div>
                     </div>`;
             }
         }
 
-        html += '</div>';
+        html += "</div>";
         return html;
     }
 
     function formatIPData(data) {
         let html = '<div class="space-y-4">';
-        
+
         // Basic Info
         html += `
             <div class="bg-blue-50 p-4 rounded-lg">
@@ -301,14 +350,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>`;
 
-        html += '</div>';
+        html += "</div>";
         return html;
     }
 
     function formatASNData(data) {
         const asnData = data.data;
         let html = '<div class="space-y-4">';
-        
+
         // Basic Info
         html += `
             <div class="bg-blue-50 p-4 rounded-lg">
@@ -336,21 +385,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="space-y-2">
                     <div class="data-row p-2">
                         <span class="font-semibold">Website:</span> 
-                        <a href="${asnData.website}" target="_blank" class="text-blue-600 hover:underline">
+                        <a href="${
+                            asnData.website
+                        }" target="_blank" class="text-blue-600 hover:underline">
                             ${asnData.website}
                         </a>
                     </div>
                     <div class="data-row p-2">
                         <span class="font-semibold">Email Contacts:</span><br>
-                        ${asnData.email_contacts.map(email => 
-                            `<span class="ml-4">• ${email}</span>`
-                        ).join('<br>')}
+                        ${asnData.email_contacts
+                            .map(
+                                (email) =>
+                                    `<span class="ml-4">• ${email}</span>`
+                            )
+                            .join("<br>")}
                     </div>
                     <div class="data-row p-2">
                         <span class="font-semibold">Abuse Contacts:</span><br>
-                        ${asnData.abuse_contacts.map(email => 
-                            `<span class="ml-4">• ${email}</span>`
-                        ).join('<br>')}
+                        ${asnData.abuse_contacts
+                            .map(
+                                (email) =>
+                                    `<span class="ml-4">• ${email}</span>`
+                            )
+                            .join("<br>")}
                     </div>
                 </div>
             </div>`;
@@ -361,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="bg-yellow-50 p-4 rounded-lg">
                     <h2 class="text-lg font-bold text-yellow-800 mb-2">Owner Address</h2>
                     <div class="p-2">
-                        ${asnData.owner_address.join('<br>')}
+                        ${asnData.owner_address.join("<br>")}
                     </div>
                 </div>`;
         }
@@ -372,21 +429,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h2 class="text-lg font-bold text-purple-800 mb-2">Registry Information</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <div class="data-row p-2">
-                        <span class="font-semibold">RIR Name:</span> ${asnData.rir_allocation.rir_name}
+                        <span class="font-semibold">RIR Name:</span> ${
+                            asnData.rir_allocation.rir_name
+                        }
                     </div>
                     <div class="data-row p-2">
-                        <span class="font-semibold">Allocation Date:</span> ${formatDate(asnData.rir_allocation.date_allocated)}
+                        <span class="font-semibold">Allocation Date:</span> ${formatDate(
+                            asnData.rir_allocation.date_allocated
+                        )}
                     </div>
                     <div class="data-row p-2">
-                        <span class="font-semibold">Traffic Ratio:</span> ${asnData.traffic_ratio || 'N/A'}
+                        <span class="font-semibold">Traffic Ratio:</span> ${
+                            asnData.traffic_ratio || "N/A"
+                        }
                     </div>
                     <div class="data-row p-2">
-                        <span class="font-semibold">Last Updated:</span> ${formatDate(asnData.date_updated)}
+                        <span class="font-semibold">Last Updated:</span> ${formatDate(
+                            asnData.date_updated
+                        )}
                     </div>
                 </div>
             </div>`;
 
-        html += '</div>';
+        html += "</div>";
         return html;
     }
 
@@ -395,62 +460,82 @@ document.addEventListener('DOMContentLoaded', () => {
         performLookup();
     }
 
-    async function performLookup() {
+    async function performLookup(pushState = true) {
         const query = queryInput.value.trim();
         toastManager.clear();
 
         if (!query) {
-            alert('Please enter a value to lookup');
+            alert("Please enter a value to lookup");
             return;
         }
 
-        resultDiv.classList.remove('hidden');
-        printButton.classList.add('hidden');
-        queryTypeDiv.textContent = 'Loading...';
-        resultContent.innerHTML = '';
+        if (pushState) {
+            window.history.pushState({}, "", `/${encodeURIComponent(query)}`);
+        }
+
+        resultDiv.classList.remove("hidden");
+        printButton.classList.add("hidden");
+        queryTypeDiv.textContent = "Loading...";
+        resultContent.innerHTML = "";
 
         try {
             const response = await fetch(`/api/lookup/${query}`);
             const data = await response.json();
-            
+
             if (data.error) {
-                queryTypeDiv.textContent = 'Error';
-                resultContent.innerHTML = `<div class="text-red-600">${data.error}${data.message ? '<br>' + data.message : ''}</div>`;
+                queryTypeDiv.textContent = "Error";
+                resultContent.innerHTML = `<div class="text-red-600">${
+                    data.error
+                }${data.message ? "<br>" + data.message : ""}</div>`;
             } else {
                 queryTypeDiv.textContent = `Type: ${data.type.toUpperCase()}${
-                    data.type === 'ip' ? ` (Source: ${data.data.source})` :
-                    data.type === 'asn' ? ' (Source: RIPEstat + PeeringDB)' :
-                    data.type === 'whois' ? ' (Source: Direct WHOIS Server)' : ''
+                    data.type === "ip"
+                        ? ` (Source: ${data.data.source})`
+                        : data.type === "asn"
+                        ? " (Source: RIPEstat + PeeringDB)"
+                        : data.type === "whois"
+                        ? " (Source: Direct WHOIS Server)"
+                        : ""
                 }`;
-                
+
                 switch (data.type) {
-                    case 'whois':
+                    case "whois":
                         resultContent.innerHTML = formatWhoisData(data.data);
                         break;
-                    case 'ip':
+                    case "ip":
                         resultContent.innerHTML = formatIPData(data.data);
                         break;
-                    case 'asn':
+                    case "asn":
                         resultContent.innerHTML = formatASNData(data.data);
                         break;
                     default:
-                        resultContent.innerHTML = `<pre class="whitespace-pre-wrap">${JSON.stringify(data.data, null, 2)}</pre>`;
+                        resultContent.innerHTML = `<pre class="whitespace-pre-wrap">${JSON.stringify(
+                            data.data,
+                            null,
+                            2
+                        )}</pre>`;
                 }
 
                 // Add event listener to IP lookup buttons
-                const ipButtons = document.querySelectorAll('.ipLookupButton');
-                ipButtons.forEach(button => {
-                    button.addEventListener('click', () => handleIpLookupClick(button.textContent.trim()));
+                const ipButtons = document.querySelectorAll(".ipLookupButton");
+                ipButtons.forEach((button) => {
+                    button.addEventListener("click", () =>
+                        handleIpLookupClick(button.textContent.trim())
+                    );
                 });
 
                 // Show print button after successful lookup
-                printButton.classList.remove('hidden');
+                printButton.classList.remove("hidden");
 
-                toastManager.show('Lookup complete', 'success', false, 1000);
+                toastManager.show("Lookup complete", "success", false, 1000);
             }
         } catch (error) {
             console.error(error);
-            toastManager.show('Error performing lookup. Please try again.', 'error', true);
+            toastManager.show(
+                "Error performing lookup. Please try again.",
+                "error",
+                true
+            );
         }
     }
 
@@ -462,18 +547,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.title = originalTitle;
     }
 
-    // Check for lookup query parameter and hash on page load
+    // Check for lookup query from URL path on page load
     const performLookupOnLoad = async () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const lookupQuery = urlParams.get('lookup');
+        const pathQuery = decodeURIComponent(window.location.pathname.slice(1));
+        const lookupQuery =
+            pathQuery ||
+            new URLSearchParams(window.location.search).get("lookup");
         if (lookupQuery) {
             queryInput.value = lookupQuery;
-            performLookup().then(() => {
-                // After lookup completes, check if there's a hash to scroll to
+            performLookup(false).then(() => {
                 if (window.location.hash) {
-                    // Small delay to ensure content is rendered
                     setTimeout(() => {
-                        const targetElement = document.querySelector(window.location.hash);
+                        const targetElement = document.querySelector(
+                            window.location.hash
+                        );
                         if (targetElement) {
                             targetElement.scrollIntoView();
                         }
@@ -481,23 +568,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-    }
+    };
+
+    // Handle browser back/forward
+    window.addEventListener("popstate", () => {
+        const pathQuery = decodeURIComponent(window.location.pathname.slice(1));
+        if (pathQuery) {
+            queryInput.value = pathQuery;
+            performLookup(false);
+        } else {
+            queryInput.value = "";
+            resultDiv.classList.add("hidden");
+            printButton.classList.add("hidden");
+            queryTypeDiv.textContent = "";
+            resultContent.innerHTML = "";
+        }
+    });
 
     const addButtonEventListeners = () => {
-        lookupButton.addEventListener('click', performLookup);  
-        themeToggleBtn.addEventListener('click', toggleDarkMode);  themeToggleBtn.addEventListener('click', toggleDarkMode);
-        queryInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        lookupButton.addEventListener("click", performLookup);
+        themeToggleBtn.addEventListener("click", toggleDarkMode);
+        themeToggleBtn.addEventListener("click", toggleDarkMode);
+        queryInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
                 performLookup();
             }
         });
-        printButton.addEventListener('click', printResults);
-    }
+        printButton.addEventListener("click", printResults);
+    };
 
     const initialize = async () => {
-        // Check local storage, default to dark mode if not set
-        if (localStorage.getItem('darkMode') === 'false') {
-            document.documentElement.classList.remove('dark');
+        // Check local storage, default to light mode if not set
+        if (localStorage.getItem("darkMode") === "true") {
+            document.documentElement.classList.add("dark");
+            document.documentElement.setAttribute("data-theme", "dark");
         }
 
         // Initialize App
@@ -507,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
         performLookupOnLoad();
 
         queryInput.focus();
-    }
+    };
 
     initialize();
 });
